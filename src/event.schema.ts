@@ -9,6 +9,9 @@ export class Event {
   name: string;
 
   @Prop()
+  eventType: string;
+
+  @Prop({ type: Object })
   payload: Record<string, unknown>;
 }
 

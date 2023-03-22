@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
 import { MongooseModule } from '@nestjs/mongoose';
+import { EventModule } from './event/event.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       },
     }),
     MongooseModule.forRoot('mongodb://localhost/event-manager'),
+    EventModule,
   ],
 })
 export class AppModule {}
