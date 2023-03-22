@@ -1,26 +1,24 @@
 import { Module } from '@nestjs/common';
-import { BullModule } from '@nestjs/bull';
 import { MongooseModule } from '@nestjs/mongoose';
-import { HttpModule } from '@nestjs/axios';
+import { BullModule } from '@nestjs/bull';
+import { Event, EventSchema } from '../schemas/event.schema';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventController } from './event.controller';
 import { EventService } from './event.service';
-import { Event, EventSchema } from '../event.schema';
-import { Webhook, WebhookSchema } from '../webhook.schema';
-import { bullConfig } from '../bull-config';
+import { EventProcessor } from './event.processor';
+import { getBullConfig } from '../configs/bull-config';
 
 @Module({
   imports: [
-    BullModule.registerQueue({
+    MongooseModule.forFeature([{ name: Event.name, schema: EventSchema }]),
+    BullModule.registerQueueAsync({
       name: 'event',
-      ...bullConfig,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getBullConfig,
     }),
-    MongooseModule.forFeature([
-      { name: Event.name, schema: EventSchema },
-      { name: Webhook.name, schema: WebhookSchema },
-    ]),
-    HttpModule,
   ],
   controllers: [EventController],
-  providers: [EventService],
+  providers: [EventService, EventProcessor],
 })
 export class EventModule {}

@@ -13,6 +13,8 @@ services:
     depends_on:
       - mongo
       - redis
+    networks:
+      - app-network
 
   mongo:
     image: mongo:4.4
@@ -21,6 +23,8 @@ services:
       - '27017:27017'
     volumes:
       - mongo-data:/data/db
+    networks:
+      - app-network
 
   redis:
     image: redis:6.2
@@ -29,7 +33,12 @@ services:
       - '6379:6379'
     volumes:
       - redis-data:/data
+    networks:
+      - app-network
 
 volumes:
   mongo-data:
   redis-data:
+
+networks:
+  app-network:

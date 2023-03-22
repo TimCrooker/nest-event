@@ -3,14 +3,13 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue, Job } from 'bull';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Event, EventDocument } from '../event.schema';
-import { Webhook, WebhookDocument } from '../webhook.schema';
+import { Event, EventDocument } from '../schemas/event.schema';
+import { Webhook, WebhookDocument } from '../schemas/webhook.schema';
 import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class EventService {
   constructor(
-    @InjectQueue('event') private eventQueue: Queue,
     @InjectModel(Event.name) private eventModel: Model<EventDocument>,
     @InjectModel(Webhook.name) private webhookModel: Model<WebhookDocument>,
     private httpService: HttpService,
