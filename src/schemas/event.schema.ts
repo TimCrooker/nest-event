@@ -9,6 +9,9 @@ export class Event {
   name: string;
 
   @Prop()
+  timestamp: number;
+
+  @Prop()
   eventType: string;
 
   @Prop({ type: Object })

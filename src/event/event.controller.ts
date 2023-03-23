@@ -1,18 +1,26 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Webhook } from 'src/schemas/webhook.schema';
 import { EventService } from './event.service';
+import { CreateEventRequest, RegisterWebhookRequest } from './types/webhook';
 
 @Controller('event')
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
   @Post()
-  create(@Body() createEventDto: any): Promise<any> {
+  create(
+    @Body() createEventDto: CreateEventRequest,
+  ): Promise<CreateEventRequest> {
+    console.log('create event', createEventDto);
     return this.eventService.create(createEventDto);
   }
 
   // create new webhook event get endpoint
-  @Post('register-webhook')
-  registerWebhook(@Body() registerWebhookDto: any): Promise<any> {
-    return this.eventService.registerWebhook(registerWebhookDto);
+  @Post('webhook/subscribe')
+  registerWebhook(
+    @Body() registerWebhookRequest: RegisterWebhookRequest,
+  ): Promise<Array<Webhook>> {
+    console.log('Registering webhook', registerWebhookRequest);
+    return this.eventService.registerWebhook(registerWebhookRequest);
   }
 }

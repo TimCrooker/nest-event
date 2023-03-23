@@ -7,6 +7,7 @@ import { getBullConfig } from './configs/bull-config';
 import { getMongoConfig } from './configs/mongo.config';
 import { EventModule } from './event/event.module';
 import { AppController } from './app.controller';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AppController } from './app.controller';
       useFactory: getBullConfig,
     }),
     EventModule,
+    HttpModule,
   ],
   controllers: [AppController],
   providers: [AppService],

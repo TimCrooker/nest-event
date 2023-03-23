@@ -6,7 +6,10 @@ export type WebhookDocument = Webhook & Document;
 @Schema()
 export class Webhook {
   @Prop()
-  url: string;
+  ownerId: string;
+
+  @Prop()
+  webhookUrl: string;
 
   @Prop()
   eventType: string;
