@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { JobOptions, QueueOptions } from 'bull';
+import { QueueOptions } from 'bull';
 
 export const getBullConfig = async (
   configService: ConfigService,

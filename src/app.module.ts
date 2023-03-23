@@ -1,16 +1,29 @@
+import { AppService } from './app.service';
+import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { getBullConfig } from './configs/bull-config';
+import { getMongoConfig } from './configs/mongo.config';
 import { EventModule } from './event/event.module';
-import { mongooseConfig } from './mongoose-config';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(mongooseConfig.uri, { ...mongooseConfig }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getMongoConfig,
+    }),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getBullConfig,
+    }),
     EventModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

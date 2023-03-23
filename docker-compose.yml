@@ -3,13 +3,16 @@ version: '3.8'
 services:
   app:
     build: .
-    container_name: event_manager_app
+    container_name: app
     ports:
       - '3000:3000'
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - MONGODB_URI=mongodb://mongo:27017/event-manager
+      - REDIS_TTL=86000
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_NAME=event-manager
     depends_on:
       - mongo
       - redis
@@ -17,8 +20,8 @@ services:
       - app-network
 
   mongo:
-    image: mongo:4.4
-    container_name: event_manager_mongo
+    image: mongo
+    container_name: mongo
     ports:
       - '27017:27017'
     volumes:
@@ -27,8 +30,8 @@ services:
       - app-network
 
   redis:
-    image: redis:6.2
-    container_name: event_manager_redis
+    image: redis
+    container_name: redis
     ports:
       - '6379:6379'
     volumes:

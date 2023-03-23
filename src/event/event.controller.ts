@@ -10,6 +10,7 @@ export class EventController {
     return this.eventService.create(createEventDto);
   }
 
+  // create new webhook event get endpoint
   @Post('register-webhook')
   registerWebhook(@Body() registerWebhookDto: any): Promise<any> {
     return this.eventService.registerWebhook(registerWebhookDto);

@@ -1,19 +1,22 @@
 import { Processor, Process, OnQueueActive } from '@nestjs/bull';
 import { Job } from 'bull';
+import { jobNames, queueNames } from './constants/queue.constants';
 import { EventService } from './event.service';
 
-@Processor('event')
+@Processor(queueNames.EVENT_QUEUE)
 export class EventProcessor {
   constructor(private readonly eventService: EventService) {}
 
   @OnQueueActive()
   onActive(job: Job) {
     console.log(
-      `Processing job ${job.id} of type ${job.name} with data ${JSON.stringify(job.data)}...`,
+      `Processing job ${job.id} of type ${job.name} with data ${JSON.stringify(
+        job.data,
+      )}...`,
     );
   }
 
-  @Process('create')
+  @Process(jobNames.CREATE)
   async handleCreate(job: Job) {
     const { data } = job;
     try {
