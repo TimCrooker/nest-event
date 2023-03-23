@@ -20,7 +20,7 @@ export class EventProcessor {
   async handleCreate(job: Job) {
     const { data } = job;
     try {
-      const createdEvent = await this.eventService.create(data);
+      const createdEvent = await this.eventService.processEvent(data);
       console.log(`Created event: ${JSON.stringify(createdEvent)}`);
       return createdEvent;
     } catch (error) {
