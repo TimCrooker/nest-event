@@ -38,6 +38,8 @@ export class EventService {
   async registerWebhook(
     webhookDto: RegisterWebhookRequest,
   ): Promise<Webhook[]> {
+		
+
     // get all of the webhooks for the provided ownerId
     const webhooks = await this.getWebhooks(webhookDto.ownerId);
 
@@ -95,5 +97,15 @@ export class EventService {
     });
 
     return createdEvent;
+  }
+
+  async removeWebhook(ownerId: string, eventType: string): Promise<void> {
+    await this.webhookModel.deleteMany({ ownerId, eventType }).exec();
+    console.log(
+      'Removed webhooks for ownerId: ' +
+        ownerId +
+        ' and eventType: ' +
+        eventType,
+    );
   }
 }
